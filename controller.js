@@ -21,4 +21,20 @@ export function clickCell( cell, position ) {
     }
 }
 
-
+export function createMaze(algorithm) {
+    switch(algorithm) {
+        case "walls":
+            model.allWalls();
+            break;
+        case "open":
+            model.noWalls();
+            break;
+        case "random":
+            model.randomWalls();
+            break;
+        case "dfs":
+            model.randomizedDFS();
+            break;
+    }
+    draw();
+}

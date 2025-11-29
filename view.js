@@ -21,37 +21,6 @@ export function buildGrid(model) {
     visualMaze.style.setProperty("--COLS", model.cols());
 }
 
-export function initializeClicks() {
-    document.querySelector("#maze").addEventListener("click", clickMaze);
-
-    const visualCells = Array.from(document.querySelectorAll("#maze .cell"));
-
-    function clickMaze(event) {
-        const visualCell = event.target;
-
-        // find matching cell in model
-        const index = visualCells.indexOf(visualCell);
-        const cell = _model.cellAtIndex(index);
-
-        // find click-position in cell (n-s-e-w)
-        const x = event.offsetX / visualCell.offsetWidth - .5;
-        const y = event.offsetY / visualCell.offsetHeight - .5;
-
-        let position = "center";
-        // treat the middle two-thirds as center - and the remaining as edges
-        if (Math.abs(x) > 0.3 || Math.abs(y) > 0.3) {
-            if (Math.abs(x) > Math.abs(y)) {
-                // x is dominant
-                position = x < 0 ? "west" : "east";
-            } else {
-                // y is dominant
-                position = y < 0 ? "north" : "south";
-            }
-        }
-        controller.clickCell(cell, position);
-    }
-}
-
 export function displayGrid(model) {
     const visualCells = document.querySelectorAll("#maze .cell");
 
@@ -68,4 +37,51 @@ export function displayGrid(model) {
             if (cell.east) visualCell.classList.add("wall-east");
         }
     }
+}
+
+export function initializeClicks() {
+    // Make sure we don't accidentally post the form
+    document.querySelector("form").addEventListener("submit", (event) => event.preventDefault());
+    // add listeners for form-buttons
+    document.querySelector("#btn_creategrid").addEventListener("click", clickCreateGrid);
+    document.querySelector("#btn_createmaze").addEventListener("click", clickCreateMaze);
+
+    // and for every single cell in the maze
+    document.querySelector("#maze").addEventListener("click", clickMaze);
+}
+
+function clickCreateGrid() {
+    // TODO: Re-create grid from size ...
+}
+
+function clickCreateMaze() {
+    const algorithm = document.forms[0].algo_input.value;
+    controller.createMaze(algorithm);
+}
+
+function clickMaze(event) {
+    const visualCell = event.target;
+
+    const visualCells = Array.from(document.querySelectorAll("#maze .cell"));
+
+    // find matching cell in model
+    const index = visualCells.indexOf(visualCell);
+    const cell = _model.cellAtIndex(index);
+
+    // find click-position in cell (n-s-e-w)
+    const x = event.offsetX / visualCell.offsetWidth - .5;
+    const y = event.offsetY / visualCell.offsetHeight - .5;
+
+    let position = "center";
+    // treat the middle two-thirds as center - and the remaining as edges
+    if (Math.abs(x) > 0.3 || Math.abs(y) > 0.3) {
+        if (Math.abs(x) > Math.abs(y)) {
+            // x is dominant
+            position = x < 0 ? "west" : "east";
+        } else {
+            // y is dominant
+            position = y < 0 ? "north" : "south";
+        }
+    }
+    controller.clickCell(cell, position);
 }

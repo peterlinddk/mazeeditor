@@ -9,107 +9,46 @@
 <body>
     <h1>Maze Editor</h1>
 
+    <section>
+        <form action="">
+            <fieldset>
+                <legend>Grid</legend>
+                <label for="rows_input">rows</label>
+                <input type="number" name="rows_input" id="rows_input">
+    
+                <label for="cols_input">cols</label>
+                <input type="number" name="cols_input" id="cols_input">
+
+                <button id="btn_creategrid">Create Grid</button>
+            </fieldset>
+            <fieldset>
+                <legend>Maze</legend>
+                <label for="algo_input">algorithm</label>
+                <select name="algo_input" id="algo_input">
+                    <option value="open">Completely open area</option>
+                    <option value="walls" selected>Every cell walled in</option>
+                    <option value="random">Absolutely random</option>
+                    <option value="dfs">Randomized DFS</option>
+                <!--
+                    <option value="kruskal">Kruskal's</option>
+                    <option value="prim">Prim's</option>
+                    <option value="wilson">Wilson's</option>
+                    <option value="aldous-broder">Aldous-Broder</option>
+                    <option value="fractal">Fractal Tesselation</option>
+                    <option value="eller">Eller's</option>
+                    <option value="sidewinder">Sidewinder</option>
+                    <option value="B3/S12345">B3/S12345</option>
+                    <option value="B3/S1234">B3/S1234</option>
+                -->    
+                </select>
+                <button id="btn_createmaze">Create Maze</button>
+            </fieldset>
+
+        </form>
+    </section>
+    <hr>
+
     <div id="maze">
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
 
     </div>
 

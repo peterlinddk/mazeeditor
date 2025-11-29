@@ -4,6 +4,11 @@ body {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
+form input[type=number] {
+    width: 3em;
+    text-align: right;
+}
+
 #maze {
     display: grid;
     width: fit-content;
