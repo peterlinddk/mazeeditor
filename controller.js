@@ -35,6 +35,9 @@ export function createMaze(algorithm) {
         case "dfs":
             model.randomizedDFS();
             break;
+         case "kruskal":
+            model.kruskal();
+            break;
     }
     draw();
 }

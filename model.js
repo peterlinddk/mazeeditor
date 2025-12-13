@@ -160,3 +160,59 @@ function dfs_visit(currentCell) {
         neighbours = neighbours.filter(cell => !cell.visited);
     }
 }
+
+export function kruskal() {
+    allWalls();
+    // Create list of all walls ...
+    const walls = [];
+
+    // And a set for each cell
+    const cellSets = new Set(); // TODO: Make this a "disjoint set"
+
+    // Build lists of walls and cells
+    for (let row = 0; row < grid.rows(); row++) {
+        for (let col = 0; col < grid.cols(); col++) {
+            // Create a set for each cell
+            const cell = grid.get({row,col});
+            cellSets.add( new Set([cell]));
+            // Create a "wall" that divides two cells
+            // - horisontally - if there is a cell after this
+            if (col < grid.cols()-1) {
+                walls.push( { cellA: cell, cellB: grid.nextInRow(cell), direction: "hori"} );
+            }
+            // - and vertically - if there is a cell below this
+            if (row < grid.rows()-1) {
+                walls.push( {cellA: cell, cellB: grid.nextInCol(cell), direction: "vert"});
+            }
+        }
+    }
+    
+    // For each wall:
+    while( walls.length > 0 ) {
+        // pick a wall at random
+        const [wall] = walls.splice(Math.floor(Math.random() * walls.length), 1);
+        // Find the two sets containing the two cells 
+        const setA = cellSets.values().find( set => set.has(wall.cellA));
+        const setB = cellSets.values().find( set => set.has(wall.cellB));
+
+        // if they are two distinct sets
+        if( setA !== setB ) {
+            // remove the wall
+            if(wall.direction === "hori") {
+                wall.cellA.east = false;
+                wall.cellB.west = false;
+            } else {
+                wall.cellA.south = false;
+                wall.cellB.north = false;
+            }
+            // and join the two sets
+            const union = setA.union(setB);
+            // remove both sets from cellSets
+            cellSets.delete(setA);
+            cellSets.delete(setB);
+            // and add the union in stead
+            cellSets.add(union);
+        }
+
+    }
+}
