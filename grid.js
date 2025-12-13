@@ -49,7 +49,7 @@ export default class Grid {
     }
 
     // - returnerer en liste over alle naboceller til denne (i form af `{row, col}` objekter
-    neighbours({ row, col }) {
+    neighbourCoords({ row, col }) {
         const neighbours = [];
         // north
         if (row > 0) neighbours.push({ row: row - 1, col });
@@ -64,11 +64,11 @@ export default class Grid {
     }
 
     // - returnerer en liste over alle nabocellers values.
-    neighbourValues({ row, col }) {
-        return this.neighbours({ row, col }).map(cell => this.get(cell));
+    neighbours({ row, col }) {
+        return this.neighbourCoords({ row, col }).map(cell => this.get(cell));
     }
 
-    //Når der skal returneres en celle, er det i form at et objekt med `{row, col, value}`
+    //Når der skal returneres en celle, er det kun value der returneres
 
     // - returnerer cellen til højre efter denne, eller undefined hvis der ikke er flere i den **row**
     nextInRow({ row, col }) {
@@ -82,7 +82,7 @@ export default class Grid {
     // - returnerer cellen over denne, eller undefined, hvis der ikke er nogen
     north({ row, col }) {
         if (row > 0) {
-            return { row: row - 1, col, value: this.get({ row: row - 1, col }) }
+            return this.get({ row: row - 1, col });
         } else {
             return undefined;
         }
@@ -90,7 +90,7 @@ export default class Grid {
     // - returnerer cellen under denne, eller undefined, hvis der ikke er nogen
     south({ row, col }) {
         if (row < this.#rows - 1) {
-            return { row: row + 1, col, value: this.get({ row: row + 1, col }) }
+            return this.get({ row: row + 1, col });
         } else {
             return undefined;
         }
@@ -98,7 +98,7 @@ export default class Grid {
     //- returnerer cellen til venstre for denne, eller undefined, hvis der ikke er nogen
     west({ row, col }) {
         if (col > 0) {
-            return { row, col: col - 1, value: this.get({ row, col: col - 1 }) }
+            return this.get({ row, col: col - 1 });
         } else {
             return undefined;
         }
@@ -106,7 +106,7 @@ export default class Grid {
     // - returnerer cellen til højre for denne, eller undefined, hvis der ikke er nogen
     east({ row, col }) {
         if (col < this.#cols - 1) {
-            return { row, col: col + 1, value: this.get({ row, col: col + 1 }) }
+            return this.get({ row, col: col + 1 });
         } else {
             return undefined;
         }

@@ -11,7 +11,8 @@ export function initializeMaze() {
         for (let col = 0; col < grid.cols(); col++) {
             // create completely walled in cells
             const cell = {
-                row, col,
+                row,
+                col,
                 north: true,
                 south: true,
                 east: true,
@@ -133,7 +134,7 @@ export function randomizedDFS() {
 function dfs_visit(currentCell) {
     currentCell.visited = true;
     // get unvisited neighbours
-    let neighbours = grid.neighbourValues(currentCell).filter(cell => !cell.visited);
+    let neighbours = grid.neighbours(currentCell).filter(cell => !cell.visited);
     while (neighbours.length > 0) {
         // select a neighbour at random
         let index = Math.floor(Math.random() * neighbours.length);
