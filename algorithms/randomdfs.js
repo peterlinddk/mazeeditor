@@ -3,23 +3,10 @@ import Algorithm from "./algorithm.js"
 
 export default class RandomizedDFS extends Algorithm {
 
-    last = null;
     stack = [];
 
     constructor(controller) {
         super(controller);
-    }
-
-    visit(cell) {
-        cell.visited = true;
-    }
-
-    setCurrent(cell) {
-        if(this.last) {
-            this.last.current = false;
-        }
-        cell.current = true;
-        this.last = cell;
     }
 
     initialize() {
