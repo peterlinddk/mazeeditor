@@ -94,7 +94,15 @@ function clickButton(buttonId) {
 }
 
 function clickCreateGrid() {
-    // TODO: Re-create grid from size ...
+    // Re-create grid from sizes given ...
+    const rows = document.querySelector("#rows_input").value;
+    const cols = document.querySelector("#cols_input").value;
+
+    if( rows > 2 && cols > 2) {
+        controller.reInitialize(rows, cols);
+    } else {
+        // TODO: Display error
+    }
 }
 
 function clickCreateMaze() {

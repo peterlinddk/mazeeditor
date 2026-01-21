@@ -2,8 +2,8 @@ import Grid from "./grid.js";
 
 let grid = null;
 
-export function initializeMaze() {
-    grid = new Grid(10, 14);
+export function initializeMaze(rows=10, cols=14) {
+    grid = new Grid(rows, cols);
 
     window.grid = grid;
 

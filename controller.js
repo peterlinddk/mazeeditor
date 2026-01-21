@@ -15,6 +15,12 @@ export function initialize() {
     draw();
 }
 
+export function reInitialize(rows, cols) {
+    model.initializeMaze(rows,cols);
+    view.buildGrid(model);
+    draw();
+}
+
 function draw() {
     view.displayGrid(model);
 }
@@ -55,7 +61,7 @@ function setAlgorithm(algorithm) {
 }
 
 function initializeControls() {
-    // TODO: Enable and disable play/pause/step correctly
+    // Enable and disable play/pause/step correctly
     view.enablePlayButtons();
 }
 
@@ -63,7 +69,7 @@ let autoRun = false;
 let autoSpeed = 250;
 
 export function setSpeed(speed) {
-    autoSpeed = 510 - speed;
+    autoSpeed = 501 - speed;
 }
 
 export function run() {
