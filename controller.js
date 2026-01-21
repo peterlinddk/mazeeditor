@@ -1,12 +1,16 @@
 import * as model from "./model.js";
 import * as view from "./view.js";
 
+// import algorithms
+import RandomizedDFS from "./algorithms/randomdfs.js";
+
+let currentAlgorithm = null;
 
 export function initialize() {
     model.initializeMaze();
     view.buildGrid(model);
     view.initializeClicks();
-
+    view.disablePlayButtons();
     draw();
 }
 
@@ -14,15 +18,15 @@ function draw() {
     view.displayGrid(model);
 }
 
-export function clickCell( cell, position ) {
-    if(position != "center") {
+export function clickCell(cell, position) {
+    if (position != "center") {
         model.toggleWall(cell, position);
         draw();
     }
 }
 
-export function createMaze(algorithm) {
-    switch(algorithm) {
+export function createMaze(name) {
+    switch (name) {
         case "walls":
             model.allWalls();
             break;
@@ -33,11 +37,53 @@ export function createMaze(algorithm) {
             model.randomWalls();
             break;
         case "dfs":
-            model.randomizedDFS();
-            break;
-         case "kruskal":
-            model.kruskal();
+            setAlgorithm(new RandomizedDFS());
             break;
     }
     draw();
+}
+
+function setAlgorithm(algorithm) {
+    currentAlgorithm = algorithm;
+    currentAlgorithm.initialize();
+    initializeControls();
+
+}
+
+function initializeControls() {
+    // TODO: Enable and disable play/pause/step correctly
+    view.enablePlayButtons();
+}
+
+let autoRun = false;
+let autoSpeed = 250;
+
+export function setSpeed(speed) {
+    autoSpeed = 510 - speed;
+}
+
+export function run() {
+    autoRun = true;
+    view.disableRunButton();
+    step();
+}
+
+export function pause() {
+    autoRun = false;
+    view.enableRunButton();
+}
+
+export function step() {
+    if (currentAlgorithm) {
+        if (!currentAlgorithm.done) {
+            currentAlgorithm.step();
+            view.displayGrid(model);
+            if (autoRun) {
+                setTimeout(step, autoSpeed);
+            }
+        } else {
+            view.disablePlayButtons();
+            autoRun = false;
+        }
+    }
 }

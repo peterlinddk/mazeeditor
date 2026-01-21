@@ -35,6 +35,11 @@ export function displayGrid(model) {
             if (cell.south) visualCell.classList.add("wall-south");
             if (cell.west) visualCell.classList.add("wall-west");
             if (cell.east) visualCell.classList.add("wall-east");
+
+            visualCell.classList.remove("visited", "current", "instack");
+            if (cell.visited) visualCell.classList.add("visited");
+            if (cell.current) visualCell.classList.add("current");
+            if (cell.inStack) visualCell.classList.add("instack");
         }
     }
 }
@@ -42,12 +47,50 @@ export function displayGrid(model) {
 export function initializeClicks() {
     // Make sure we don't accidentally post the form
     document.querySelector("form").addEventListener("submit", (event) => event.preventDefault());
-    // add listeners for form-buttons
-    document.querySelector("#btn_creategrid").addEventListener("click", clickCreateGrid);
-    document.querySelector("#btn_createmaze").addEventListener("click", clickCreateMaze);
+    // add click-listener for form
+    document.querySelector("form").addEventListener("click", (event) => event.target.id.startsWith("btn_") ? clickButton(event.target.id) : "");
+
+    // and change-listener for speed
+    document.querySelector("#speed_input").addEventListener("input", (event) => controller.setSpeed(event.target.value));
 
     // and for every single cell in the maze
     document.querySelector("#maze").addEventListener("click", clickMaze);
+}
+
+export function enablePlayButtons() {
+    setPlayButtons(false, true, false);
+}
+
+export function disablePlayButtons() {
+    setPlayButtons(true, true, true);
+}
+
+export function disableRunButton() {
+    setPlayButtons(true, false, true);
+}
+
+export function enableRunButton() {
+    setPlayButtons(false, true, false);
+}
+
+function setPlayButtons(run, pause, step) {
+    document.querySelector("#btn_run").disabled = run;
+    document.querySelector("#btn_pause").disabled = pause;
+    document.querySelector("#btn_step").disabled = step;
+}
+
+
+function clickButton(buttonId) {
+    //    console.log("Click button " + buttonId);
+    switch (buttonId) {
+        case "btn_creategrid": clickCreateGrid(); break;
+        case "btn_createmaze": clickCreateMaze(); break;
+        case "btn_run": controller.run(); break;
+        case "btn_pause": controller.pause(); break;
+        case "btn_step": controller.step(); break;
+        default:
+            console.error("No handler for button: " + buttonId);
+    }
 }
 
 function clickCreateGrid() {

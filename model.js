@@ -104,6 +104,18 @@ export function noWalls() {
     }
 }
 
+export function clearProperties() {
+    for (let row = 0; row < grid.rows(); row++) {
+        for (let col = 0; col < grid.cols(); col++) {
+            // create completely open grid
+            const cell = grid.get({ row, col });
+            cell.visited = false;
+            cell.current = false;
+            cell.inStack = false;
+        }
+    }
+}
+
 export function randomWalls() {
     for (let row = 0; row < grid.rows(); row++) {
         for (let col = 0; col < grid.cols(); col++) {
@@ -117,50 +129,25 @@ export function randomWalls() {
     }
 }
 
-export function randomizedDFS() {
-    allWalls();
-    // begin at cell 0, 0
-    let currentCell = grid.get({ row: 0, col: 0 });
-    dfs_visit(currentCell);
-    // clear all cells of visited
-    for (let row = 0; row < grid.rows(); row++) {
-        for (let col = 0; col < grid.cols(); col++) {
-            const cell = grid.get({ row, col });
-            delete cell.visited;
-        }
+
+export function removeWallBetween(first, second) {
+    // TODO: Make sure first and second are neighbours
+    if (second.row > first.row) {
+        first.south = false;
+        second.north = false;
+    } else if (second.row < first.row) {
+        first.north = false;
+        second.south = false;
+    } else if (second.col > first.col) {
+        first.east = false;
+        second.west = false;
+    } else if (second.col < first.col) {
+        first.west = false;
+        second.east = false;
     }
 }
 
-function dfs_visit(currentCell) {
-    currentCell.visited = true;
-    // get unvisited neighbours
-    let neighbours = grid.neighbours(currentCell).filter(cell => !cell.visited);
-    while (neighbours.length > 0) {
-        // select a neighbour at random
-        let index = Math.floor(Math.random() * neighbours.length);
-        let neighbour = neighbours.splice(index, 1).shift();
-        // connect to this neighbour
-        if (neighbour.row > currentCell.row) {
-            currentCell.south = false;
-            neighbour.north = false;
-        } else if (neighbour.row < currentCell.row) {
-            currentCell.north = false;
-            neighbour.south = false;
-        } else if (neighbour.col > currentCell.col) {
-            currentCell.east = false;
-            neighbour.west = false;
-        } else if (neighbour.col < currentCell.col) {
-            currentCell.west = false;
-            neighbour.east = false;
-        }
-
-        // and then visit it
-        dfs_visit(neighbour);
-
-        neighbours = neighbours.filter(cell => !cell.visited);
-    }
-}
-
+// TODO: Move these algorithms to algorithms classes - they don't work here!
 export function kruskal() {
     allWalls();
     // Create list of all walls ...
@@ -173,32 +160,32 @@ export function kruskal() {
     for (let row = 0; row < grid.rows(); row++) {
         for (let col = 0; col < grid.cols(); col++) {
             // Create a set for each cell
-            const cell = grid.get({row,col});
-            cellSets.add( new Set([cell]));
+            const cell = grid.get({ row, col });
+            cellSets.add(new Set([cell]));
             // Create a "wall" that divides two cells
             // - horisontally - if there is a cell after this
-            if (col < grid.cols()-1) {
-                walls.push( { cellA: cell, cellB: grid.nextInRow(cell), direction: "hori"} );
+            if (col < grid.cols() - 1) {
+                walls.push({ cellA: cell, cellB: grid.nextInRow(cell), direction: "hori" });
             }
             // - and vertically - if there is a cell below this
-            if (row < grid.rows()-1) {
-                walls.push( {cellA: cell, cellB: grid.nextInCol(cell), direction: "vert"});
+            if (row < grid.rows() - 1) {
+                walls.push({ cellA: cell, cellB: grid.nextInCol(cell), direction: "vert" });
             }
         }
     }
-    
+
     // For each wall:
-    while( walls.length > 0 ) {
+    while (walls.length > 0) {
         // pick a wall at random
         const [wall] = walls.splice(Math.floor(Math.random() * walls.length), 1);
         // Find the two sets containing the two cells 
-        const setA = cellSets.values().find( set => set.has(wall.cellA));
-        const setB = cellSets.values().find( set => set.has(wall.cellB));
+        const setA = cellSets.values().find(set => set.has(wall.cellA));
+        const setB = cellSets.values().find(set => set.has(wall.cellB));
 
         // if they are two distinct sets
-        if( setA !== setB ) {
+        if (setA !== setB) {
             // remove the wall
-            if(wall.direction === "hori") {
+            if (wall.direction === "hori") {
                 wall.cellA.east = false;
                 wall.cellB.west = false;
             } else {
@@ -215,4 +202,73 @@ export function kruskal() {
         }
 
     }
+}
+
+export function wilson() {
+    allWalls();
+    clearVisited();
+
+    const allCells = [];
+
+    for (let row = 0; row < grid.rows(); row++) {
+        for (let col = 0; col < grid.cols(); col++) {
+            // Create a set for each cell
+            const cell = grid.get({ row, col });
+            allCells.push(cell);
+        }
+    }
+
+    const cellsInMaze = new Set();
+
+    // select cell at random
+    const aCell = allCells.splice(Math.floor(Math.random() * allCells.length),1)[0];
+    // and add it it the maze
+    cellsInMaze.add(aCell);
+
+
+    while (allCells.length > 0) {
+        // select another cell at random - to walk from
+        let cell = allCells.splice(Math.floor(Math.random() * allCells.length),1)[0];
+
+        console.log("Random start cell:");
+        console.log(cell);
+
+        const path = [cell];
+        let buildingPath = true;
+
+        // build path
+        while (buildingPath) {
+            // add a random cell next to walkFrom
+            const neighbours = grid.neighbours(cell);
+            cell = neighbours[Math.floor(Math.random() * neighbours.length)];
+
+            // This random cell is either:
+            // 1 - already in the maze : so stop and add the entire path to the maze
+            // 2 - already in the path : so erase the "loop" = everything in the path following where it was
+            // 3 - neither, so add it to the path
+
+            const indexInPath = path.indexOf(cell);
+
+            // if it is in the maze - stop, and add the entire path to the maze
+            if (cellsInMaze.has(cell)) {
+                buildingPath = false;
+                for (let i = path.length - 1; i > 0; i--) {
+                    // connect last piece of path to previous
+                    const lastCell = path[i];
+                    const nextCell = path[i - 1];
+                    connectCells(lastCell, nextCell);
+                }
+            } else if (indexInPath != -1) {
+                // if it is in the path - delete everything from the index and forward
+                path.splice(indexInPath + 1, path.length - indexInPath - 1);
+                cell = path[indexInPath];
+            } else {
+                path.push(cell);
+            }
+        }
+
+    }
+
+
+
 }

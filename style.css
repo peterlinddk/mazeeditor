@@ -9,6 +9,12 @@ form input[type=number] {
     text-align: right;
 }
 
+#maze_settings {
+    display: grid;
+    grid-template-columns: min-content max-content;
+    gap: .25em;
+}
+
 #maze {
     display: grid;
     width: fit-content;
@@ -41,4 +47,19 @@ form input[type=number] {
 
 .cell.wall-east {
     border-right: 1px solid #aaa;
+}
+
+.cell.visited {
+    background-color: #69613c;
+}
+
+.cell.current {
+    background-color: #dec248;
+}
+
+.cell.instack::after {
+    content: "s";
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
 }

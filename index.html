@@ -21,17 +21,19 @@
 
                 <button id="btn_creategrid">Create Grid</button>
             </fieldset>
-            <fieldset>
+            <fieldset id="maze_settings">
                 <legend>Maze</legend>
-                <label for="algo_input">algorithm</label>
+                <label for="algo_input">Algorithm</label>
+                <div>
                 <select name="algo_input" id="algo_input">
                     <option value="open">Completely open area</option>
                     <option value="walls" selected>Every cell walled in</option>
                     <option value="random">Absolutely random</option>
                     <option value="dfs">Randomized DFS</option>
-                    <option value="kruskal">Randomized Kruskal's</option>
+                    <!-- <option value="kruskal">Randomized Kruskal's</option>
+                    <option value="wilson">Wilson's</option> -->
                 <!--     <option value="prim">Prim's</option>
-                    <option value="wilson">Wilson's</option>
+                    
                     <option value="aldous-broder">Aldous-Broder</option>
                     <option value="fractal">Fractal Tesselation</option>
                     <option value="eller">Eller's</option>
@@ -40,7 +42,16 @@
                     <option value="B3/S1234">B3/S1234</option>
                 -->    
                 </select>
-                <button id="btn_createmaze">Create Maze</button>
+                <button id="btn_createmaze">Recreate Maze</button>
+                </div>
+                <label>Animation</label>
+                <div>
+                <button id="btn_run">run ⏵</button>
+                <button id="btn_pause">pause ⏸</button>
+                <button id="btn_step">step ⏯</button>
+                </div>
+                <label for="speed_input">speed</label>
+                <input type="range" name="speed_input" id="speed_input" min="10" max="500">
             </fieldset>
 
         </form>

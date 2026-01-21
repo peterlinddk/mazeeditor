@@ -28,6 +28,12 @@ export default class Grid {
             return undefined;
     }
 
+    getRandomCell() {
+        const row = Math.floor(Math.random()*this.#rows);
+        const col = Math.floor(Math.random()*this.#cols);
+        return this.get({row,col});
+    }
+
     // - returnerer index (nummeret) på cellen i denne række+kolonne
     indexFor({ row, col }) {
         if (this.isValidCoordinate({ row, col }))
