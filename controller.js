@@ -3,6 +3,7 @@ import * as view from "./view.js";
 
 // import algorithms
 import RandomizedDFS from "./algorithms/randomdfs.js";
+import Kruskal from "./algorithms/kruskal.js";
 
 let currentAlgorithm = null;
 
@@ -38,6 +39,9 @@ export function createMaze(name) {
             break;
         case "dfs":
             setAlgorithm(new RandomizedDFS());
+            break;
+        case "kruskal":
+            setAlgorithm(new Kruskal());
             break;
     }
     draw();
