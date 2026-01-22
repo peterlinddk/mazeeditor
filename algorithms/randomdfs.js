@@ -31,7 +31,6 @@ export default class RandomizedDFS extends Algorithm {
         if (!this.done && this.stack.length > 0) {
             // pop a cell , and make it the current cell
             const currentCell = this.stack.pop();
-            this.setCurrent(currentCell);
             currentCell.inStack = false;
             
             // if the current cell has any neighbours which have not been visited:
@@ -55,8 +54,12 @@ export default class RandomizedDFS extends Algorithm {
                 this.visit(chosen);
                 this.stack.push(chosen);
                 this.setCurrent(chosen);
+            } else {
+                // Peek at the last in the stack if backtracking
+                this.setCurrent(this.stack[this.stack.length-1]);
             }
         } else {
+            this.setCurrent(null);
             this.done = true;
         }
     }

@@ -15,7 +15,9 @@ export default class Algorithm {
         if(this.last) {
             this.last.current = false;
         }
-        cell.current = true;
+        if(cell) {
+            cell.current = true;
+        }
         this.last = cell;
     }
 
