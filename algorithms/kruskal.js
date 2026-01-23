@@ -38,9 +38,16 @@ export default class Kruskal extends Algorithm {
         }
     }
 
+    recentlyJoined = [];
+
     step() {
         // As long as there are walls
         if (!this.done && this.walls.length > 0) {
+
+            // First remove .joined from all recently joined cells
+            while( this.recentlyJoined.length > 0 ) {
+                this.recentlyJoined.shift().joined = false;
+            }
 
             // pick a wall at random
             const [wall] = this.walls.splice(Math.floor(Math.random() * this.walls.length), 1);
@@ -48,15 +55,17 @@ export default class Kruskal extends Algorithm {
             const setA = this.cellSets.values().find(set => set.has(wall.cellA));
             const setB = this.cellSets.values().find(set => set.has(wall.cellB));
 
-            // TODO: Highlight wall and joined or distinct sets? To visualize algorithm better ...
+            // TODO: Highlight picked wall somehow ...
 
             // if they are two distinct sets
             if (setA !== setB) {
-                // remove the wall
-                model.removeWallBetween(wall.cellA, wall.cellB);
+                // Mark cells as visited - which will in time override the highlight ...                
                 this.visit(wall.cellA);
                 this.visit(wall.cellB);
 
+                // remove the wall
+                model.removeWallBetween(wall.cellA, wall.cellB);
+                
                 // and join the two sets
                 const union = setA.union(setB);
                 // remove both sets from cellSets
@@ -64,8 +73,22 @@ export default class Kruskal extends Algorithm {
                 this.cellSets.delete(setB);
                 // and add the union in stead
                 this.cellSets.add(union);
-            }
 
+                // mark cells in the union as newly joined
+                union.forEach(cell => {
+                    cell.joined = true;
+                    this.recentlyJoined.push(cell);
+                });
+            } else {
+                // Highlight wall between cells in the same set - make it visible that wall won't be removed!
+                if (wall.direction === "vert") {
+                    wall.cellA.highlight = "south";
+                    wall.cellB.highlight = "north";
+                } else {
+                    wall.cellA.highlight = "east";
+                    wall.cellB.highlight = "west";
+                }
+            }
         } else {
             this.done = true;
         }

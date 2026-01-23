@@ -49,12 +49,62 @@ form input[type=number] {
     border-right: 1px solid #aaa;
 }
 
+.cell.highlight-north {
+    animation: highlight-north 800ms linear 1;
+}
+
+@keyframes highlight-north {
+    50% {
+        border-top-color: #ff6666;
+    }
+}
+
+.cell.highlight-south {
+    animation: highlight-south 800ms linear 1;
+}
+
+@keyframes highlight-south {
+    50% {
+        border-bottom-color: #ff6666;
+    }
+}
+
+.cell.highlight-east {
+    animation: highlight-east 800ms linear 1;
+}
+
+@keyframes highlight-east {
+    50% {
+        border-right-color: #ff6666;
+    }
+}
+
+.cell.highlight-west {
+    animation: highlight-west 800ms linear 1;
+}
+
+@keyframes highlight-west {
+    50% {
+        border-left-color: #ff6666;
+    }
+}
+
 .cell.visited {
     background-color: #69613c;
 }
 
 .cell.current {
     background-color: #dec248;
+}
+
+.cell.joined {
+    animation: lightup 400ms linear 1;
+}
+
+@keyframes lightup {
+    50% {
+        background-color: #ebce4f;
+    }
 }
 
 .cell.instack::after {

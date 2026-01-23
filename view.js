@@ -40,6 +40,16 @@ export function displayGrid(model) {
             if (cell.visited) visualCell.classList.add("visited");
             if (cell.current) visualCell.classList.add("current");
             if (cell.inStack) visualCell.classList.add("instack");
+
+            // animations - joined cells
+            if (cell.joined && !visualCell.classList.contains("joined")) visualCell.classList.add("joined");
+            if (!cell.joined) visualCell.classList.remove("joined");
+            // - and highlight walls that can't be removed
+            visualCell.classList.remove("highlight-north", "highlight-south", "highlight-east", "highlight-west");
+            if (cell.highlight) {
+                visualCell.classList.add(`highlight-${cell.highlight}`);
+                cell.highlight = null;
+            }
         }
     }
 }
